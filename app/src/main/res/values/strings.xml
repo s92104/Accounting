@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Accounting</string>
+    <string name="btn_login">登入</string>
+    <string name="btn_sign">註冊</string>
+    <string name="username">帳號</string>
+    <string name="password">密碼</string>
+    <string name="confirm">確定</string>
+    <string name="cancel">取消</string>
+    <!--註冊-->
+    <string name="userExist">帳號已存在</string>
+    <string name="signSuccess">註冊成功</string>
+    <!--登入-->
+    <string name="userNotExist">無此帳號</string>
+    <string name="passwordError">密碼錯誤</string>
+    <string name="isRemember">是否記住帳密?</string>
+    <string name="isAutoLogin">自動登入</string>
+    <!--資料-->
+    <string name="today">今天</string>
+    <string name="thisMonth">本月</string>
+    <string name="thisYear">今年</string>
+    <string name="todayCost">今天花費</string>
+    <string name="monthCost">本月花費</string>
+    <string name="yearCost">今年花費</string>
+    <string name="totalCost">總共花費</string>
+    <string name="noData">無資料</string>
+    <string name="day">日</string>
+    <string name="month">月</string>
+    <string name="addBtn">+</string>
+    <string name="expand">展開</string>
+    <string name="collapse">收合</string>
+    <!--增加資料-->
+    <string name="itemName">名稱</string>
+    <string name="cost">金額</string>
+    <string name="addOK">添加成功</string>
+    <string name="dollar">元</string>
+    <string name="type">種類</string>
+    <string name="detail">詳細</string>
+    <string name="time">時間</string>
+    <string-array name="dataType">
+        <item>食物</item>
+        <item>衣物</item>
+        <item>住宿</item>
+        <item>交通</item>
+        <item>+</item>
+    </string-array>
+    <!--修改資料-->
+    <string name="editOK">修改成功</string>
+    <string name="delete">刪除</string>
+    <string name="deleteOK">刪除成功</string>
+    <string name="sureDelete">確定刪除?</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>

@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "874756084403",
+    "firebase_url": "https://accounting-f50f9.firebaseio.com",
+    "project_id": "accounting-f50f9",
+    "storage_bucket": "accounting-f50f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:874756084403:android:1d6d4f7e14563fab",
+        "android_client_info": {
+          "package_name": "com.example.user.accounting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "874756084403-hst692becuurm7kr1refog4tb1qto0oe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.user.accounting",
+            "certificate_hash": "921b8b2385c7988b25e13b431dc1be1c938f7f83"
+          }
+        },
+        {
+          "client_id": "874756084403-sl9oshodhlupthfnvlm5vat95jjf2nr6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCkDSv72og-WrZsONTwpoW_Nstd5bs8kj0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "874756084403-sl9oshodhlupthfnvlm5vat95jjf2nr6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
