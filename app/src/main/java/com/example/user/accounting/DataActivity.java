@@ -22,11 +22,6 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
     //Global
     Date date;
     Intent intent;
-    //enum Fragment
-    enum viewSelect
-    {
-        TODAY,MONTH,YEAR
-    }
 
     android.support.v7.widget.Toolbar toolbar_data;
     ViewPager viewPager;
@@ -89,22 +84,22 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
                     intent.putExtra("Month",date.getMonth()+1);
                     intent.putExtra("Day",date.getDate());
                     //重整
-                    if(viewPager.getCurrentItem()==viewSelect.TODAY.ordinal())
+                    if(viewPager.getCurrentItem()==0)
                         viewPager.setAdapter(fragmentPagerAdapter);
-                    viewPager.setCurrentItem(viewSelect.TODAY.ordinal());
+                    viewPager.setCurrentItem(0);
                     break;
                 case R.id.btn_month:
                     intent.putExtra("Year",date.getYear()+1900);
                     intent.putExtra("Month",date.getMonth()+1);
-                    if(viewPager.getCurrentItem()==viewSelect.MONTH.ordinal())
+                    if(viewPager.getCurrentItem()==1)
                         viewPager.setAdapter(fragmentPagerAdapter);
-                    viewPager.setCurrentItem(viewSelect.MONTH.ordinal());
+                    viewPager.setCurrentItem(1);
                     break;
                 case R.id.btn_year:
                     intent.putExtra("Year",date.getYear()+1900);
-                    if(viewPager.getCurrentItem()==viewSelect.YEAR.ordinal())
+                    if(viewPager.getCurrentItem()==1)
                         viewPager.setAdapter(fragmentPagerAdapter);
-                    viewPager.setCurrentItem(viewSelect.YEAR.ordinal());
+                    viewPager.setCurrentItem(1);
                     break;
             }
 
@@ -139,8 +134,8 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
     //Year倒回
     @Override
     public void onBackPressed() {
-        if(viewPager.getCurrentItem()==viewSelect.TODAY.ordinal() && date.getDate()!=intent.getIntExtra("Day",0))
-            viewPager.setCurrentItem(viewSelect.YEAR.ordinal());
+        if(viewPager.getCurrentItem()==0 && date.getDate()!=intent.getIntExtra("Day",0))
+            viewPager.setCurrentItem(2);
         else
             super.onBackPressed();
     }
