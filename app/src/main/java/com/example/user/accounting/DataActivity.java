@@ -1,5 +1,6 @@
 package com.example.user.accounting;
 
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.content.Intent;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -12,8 +13,11 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class DataActivity extends AppCompatActivity implements ViewPager.OnPageChangeListener {
     //User Path
@@ -28,6 +32,7 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
     FragmentPagerAdapter fragmentPagerAdapter;
     FragmentManager fragmentManager;
     Button btn_today,btn_month,btn_year;
+    ExpandableListView list_month,list_year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         fragmentManager=getSupportFragmentManager();
         fragmentPagerAdapter=new DataPagerAdapter(fragmentManager);
         viewPager.setAdapter(fragmentPagerAdapter);
+        viewPager.addOnPageChangeListener(this);
         //初始化Today
         date =new Date();
         intent=getIntent();
@@ -61,6 +67,32 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         //ToolBar
         toolbar_data=findViewById(R.id.toolbar_data);
         toolbar_data.inflateMenu(R.menu.menu_data);
+        toolbar_data.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem menuItem) {
+                switch (menuItem.getItemId())
+                {
+                    case R.id.it_addData:
+                        startActivity(new Intent(DataActivity.this,AddDataActivity.class).putExtra("Path",path));
+                        break;
+                    case R.id.it_expandAll:
+                        switch (viewPager.getCurrentItem())
+                        {
+                            case 1:for(int i=0;i<list_month.getExpandableListAdapter().getGroupCount();i++) list_month.expandGroup(i);break;
+                            case 2:for(int i=0;i<list_year.getExpandableListAdapter().getGroupCount();i++) list_year.expandGroup(i);break;
+                        }
+                        break;
+                    case R.id.it_collapseAll:
+                        switch (viewPager.getCurrentItem())
+                        {
+                            case 1:for(int i=0;i<list_month.getExpandableListAdapter().getGroupCount();i++) list_month.collapseGroup(i);break;
+                            case 2:for(int i=0;i<list_year.getExpandableListAdapter().getGroupCount();i++) list_year.collapseGroup(i);break;
+                        }
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
     void setListener()
@@ -68,8 +100,6 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         btn_today.setOnClickListener(changeFragment);
         btn_month.setOnClickListener(changeFragment);
         btn_year.setOnClickListener(changeFragment);
-        viewPager.addOnPageChangeListener(this);
-        setToolBarListener();
     }
     //切換頁面
     View.OnClickListener changeFragment=new View.OnClickListener()
@@ -97,9 +127,9 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
                     break;
                 case R.id.btn_year:
                     intent.putExtra("Year",date.getYear()+1900);
-                    if(viewPager.getCurrentItem()==1)
+                    if(viewPager.getCurrentItem()==2)
                         viewPager.setAdapter(fragmentPagerAdapter);
-                    viewPager.setCurrentItem(1);
+                    viewPager.setCurrentItem(2);
                     break;
             }
 
@@ -115,18 +145,23 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         switch (i)
         {
             case 0: btn_today.setSelected(true);break;
-            case 1: btn_month.setSelected(true);break;
-            case 2: btn_year.setSelected(true);break;
+            case 1:
+                btn_month.setSelected(true);
+                //取得ExpandableList
+                if(list_month==null)
+                    list_month=findViewById(R.id.list_month);
+                break;
+            case 2:
+                btn_year.setSelected(true);
+                if(list_year==null)
+                    list_year=findViewById(R.id.list_year);
+                break;
         }
-        if(i==0)
-            setToolBarListener();
     }
-
     @Override
     public void onPageScrolled(int i, float v, int i1) {
 
     }
-
     @Override
     public void onPageScrollStateChanged(int i) {
 
@@ -139,29 +174,5 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         else
             super.onBackPressed();
     }
-    //ActionBar
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater menuInflater=getMenuInflater();
-        menuInflater.inflate(R.menu.menu_data,menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-    //ToolBar
-    void setToolBarListener()
-    {
-        //新增資料
-        toolbar_data.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem menuItem) {
-                switch (menuItem.getItemId())
-                {
-                    case R.id.it_addData:
-                        startActivity(new Intent(DataActivity.this,AddDataActivity.class).putExtra("Path",path));
-                        break;
-                }
-                return false;
-            }
-        });
 
-    }
 }

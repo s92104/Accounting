@@ -32,7 +32,7 @@ import java.util.Map;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MonthFragment extends Fragment implements ViewPager.OnPageChangeListener{
+public class MonthFragment extends Fragment{
     Activity activity;
     String path;
     int position;
@@ -47,7 +47,6 @@ public class MonthFragment extends Fragment implements ViewPager.OnPageChangeLis
     ExpandableListView expandableListView;
     CollectionReference collectionReference;
     DocumentReference[] documentReferences;
-    ViewPager viewPager;
     Toolbar toolbar_data;
 
     DataListAdapter dataListAdapter;
@@ -99,8 +98,6 @@ public class MonthFragment extends Fragment implements ViewPager.OnPageChangeLis
         expandableListView.setGroupIndicator(null);
         text_cost=activity.findViewById(R.id.text_costMonth);
         toolbar_data=activity.findViewById(R.id.toolbar_data);
-        viewPager=activity.findViewById(R.id.viewPager);
-        viewPager.addOnPageChangeListener(this);
 
         intent=activity.getIntent();
         path=intent.getStringExtra("Path");
@@ -267,41 +264,5 @@ public class MonthFragment extends Fragment implements ViewPager.OnPageChangeLis
             showDayCost();
         }
     };
-    //OnPageChange
-    @Override
-    public void onPageSelected(int i) {
-        if(i==1)
-        {
-            toolbar_data.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-                @Override
-                public boolean onMenuItemClick(MenuItem menuItem) {
-                    switch (menuItem.getItemId())
-                    {
-                        case R.id.it_addData:
-                            startActivity(new Intent(activity,AddDataActivity.class).putExtra("Path",path));
-                            break;
-                        case R.id.it_expandAll:
-                            for(int i=0;i<groupList.size();i++)
-                                    expandableListView.expandGroup(i);
-                            break;
-                        case R.id.it_collapseAll:
-                            for(int i=0;i<groupList.size();i++)
-                                expandableListView.collapseGroup(i);
-                            break;
-                    }
-                    return false;
-                }
-            });
-        }
-    }
 
-    @Override
-    public void onPageScrolled(int i, float v, int i1) {
-
-    }
-
-    @Override
-    public void onPageScrollStateChanged(int i) {
-
-    }
 }
