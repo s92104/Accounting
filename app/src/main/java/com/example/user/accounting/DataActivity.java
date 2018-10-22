@@ -144,17 +144,17 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
         btn_year.setSelected(false);
         switch (i)
         {
-            case 0: btn_today.setSelected(true);break;
+            case 0:
+                btn_today.setSelected(true);
+                break;
             case 1:
                 btn_month.setSelected(true);
                 //取得ExpandableList
-                if(list_month==null)
-                    list_month=findViewById(R.id.list_month);
+                list_month=findViewById(R.id.list_month);
                 break;
             case 2:
                 btn_year.setSelected(true);
-                if(list_year==null)
-                    list_year=findViewById(R.id.list_year);
+                list_year=findViewById(R.id.list_year);
                 break;
         }
     }
