@@ -110,6 +110,7 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
             switch (v.getId())
             {
                 case R.id.btn_today:
+                    boolean isToday=isToday();
                     intent.putExtra("Year",date.getYear()+1900);
                     intent.putExtra("Month",date.getMonth()+1);
                     intent.putExtra("Day",date.getDate());
@@ -117,6 +118,9 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
                     if(viewPager.getCurrentItem()==0)
                         viewPager.setAdapter(fragmentPagerAdapter);
                     viewPager.setCurrentItem(0);
+                    //不是今天，重整
+                    if(!isToday)
+                        viewPager.setAdapter(fragmentPagerAdapter);
                     break;
                 case R.id.btn_month:
                     intent.putExtra("Year",date.getYear()+1900);
@@ -169,10 +173,16 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
     //Year倒回
     @Override
     public void onBackPressed() {
-        if(viewPager.getCurrentItem()==0 && date.getDate()!=intent.getIntExtra("Day",0))
+        if(viewPager.getCurrentItem()==0 && !isToday())
             viewPager.setCurrentItem(2);
         else
             super.onBackPressed();
     }
-
+    boolean isToday()
+    {
+        boolean isToday=date.getDate()==intent.getIntExtra("Day",0);
+        isToday&=date.getMonth()+1 == intent.getIntExtra("Month",0);
+        isToday&=date.getYear()+1900==intent.getIntExtra("Year",0);
+        return isToday;
+    }
 }
