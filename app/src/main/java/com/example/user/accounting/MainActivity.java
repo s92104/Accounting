@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.Switch;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
     EditText input_username,input_password;
     CheckBox check_remember;
     Switch switch_autoLogin;
+    FrameLayout frameLayout;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         //自動登入
         switch_autoLogin=findViewById(R.id.switch_autoLogin);
         switch_autoLogin.setChecked(getSharedPreferences("Account",MODE_PRIVATE).getBoolean("AutoLogin",false));
+        //等待畫面
+        frameLayout=findViewById(R.id.framelayout_login);
     }
 
     void setListener()
@@ -86,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void onClick(View v)
         {
+            //顯示讀取條
+            frameLayout.setVisibility(View.VISIBLE);
             //取得輸入
             final String username,password;
             username=input_username.getText().toString();
@@ -98,10 +105,12 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     QuerySnapshot qs = task.getResult();
+                    //隱藏讀取條
+                    frameLayout.setVisibility(View.INVISIBLE);
                     //無此帳號
                     if(qs.isEmpty())
                         Toast.makeText(MainActivity.this,R.string.userNotExist,Toast.LENGTH_SHORT).show();
-                        //帳號存在
+                    //帳號存在
                     else
                     {
                         //檢查密碼
