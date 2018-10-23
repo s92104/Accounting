@@ -125,14 +125,10 @@ public class DataActivity extends AppCompatActivity implements ViewPager.OnPageC
                 case R.id.btn_month:
                     intent.putExtra("Year",date.getYear()+1900);
                     intent.putExtra("Month",date.getMonth()+1);
-                    if(viewPager.getCurrentItem()==1)
-                        viewPager.setAdapter(fragmentPagerAdapter);
                     viewPager.setCurrentItem(1);
                     break;
                 case R.id.btn_year:
                     intent.putExtra("Year",date.getYear()+1900);
-                    if(viewPager.getCurrentItem()==2)
-                        viewPager.setAdapter(fragmentPagerAdapter);
                     viewPager.setCurrentItem(2);
                     break;
             }
