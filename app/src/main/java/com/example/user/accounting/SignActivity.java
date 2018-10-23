@@ -3,9 +3,12 @@ package com.example.user.accounting;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -27,7 +30,7 @@ public class SignActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign);
 
         initView();
-        btn_signConfirm.setOnClickListener(signup);
+        setListener();
     }
 
     Button.OnClickListener signup = new Button.OnClickListener()
@@ -70,5 +73,21 @@ public class SignActivity extends AppCompatActivity {
         btn_signConfirm=findViewById(R.id.btn_signConfirm);
         input_username=findViewById(R.id.sign_username);
         input_password=findViewById(R.id.sign_password);
+    }
+
+    void setListener()
+    {
+        btn_signConfirm.setOnClickListener(signup);
+        input_password.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId==EditorInfo.IME_ACTION_GO)
+                {
+                    btn_signConfirm.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
     }
 }

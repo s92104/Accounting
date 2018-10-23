@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -27,17 +29,21 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class EditDataActivity extends AppCompatActivity {
     Button btn_addConfirm,btn_date,btn_time;
-    EditText text_itemName,text_cost,text_type,text_detail;
+    EditText text_cost,text_type,text_detail;
     Date pickDate;
     Spinner spn_type;
     android.support.v7.widget.Toolbar toolbar_editData;
+    AutoCompleteTextView text_itemName;
+    SharedPreferences sharedPreferences;
+    Set<String> autoTextSet;
 
     String path;
-
     ArrayAdapter<String> arrayAdapter;
     ArrayList typeString;
 
@@ -59,11 +65,18 @@ public class EditDataActivity extends AppCompatActivity {
         btn_addConfirm=findViewById(R.id.btn_addConfirm);
         btn_date=findViewById(R.id.btn_date);
         btn_time=findViewById(R.id.btn_time);
-        text_itemName=findViewById(R.id.text_itemName);
         text_cost=findViewById(R.id.text_cost);
         text_type=findViewById(R.id.text_type);
         text_detail=findViewById(R.id.text_detail);
         spn_type=findViewById(R.id.spn_type);
+        //自動輸入
+        text_itemName=findViewById(R.id.text_itemName);
+        sharedPreferences=getSharedPreferences("AutoText",MODE_PRIVATE);
+        autoTextSet=sharedPreferences.getStringSet("Array",new HashSet<String>());
+        String[] autoTextArray=new String[autoTextSet.size()];
+        autoTextArray=autoTextSet.toArray(autoTextArray);
+        arrayAdapter=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,autoTextArray);
+        text_itemName.setAdapter(arrayAdapter);
 
         Intent intent=getIntent();
         //初始化時間
@@ -143,6 +156,11 @@ public class EditDataActivity extends AppCompatActivity {
             hashMap.put("Type",type);
             hashMap.put("Detail",detail);
             fs.document(path).set(hashMap);
+            //自動完成
+            sharedPreferences=getSharedPreferences("AutoText",MODE_PRIVATE);
+            autoTextSet=sharedPreferences.getStringSet("Array",new HashSet<String>());
+            autoTextSet.add(itemName);
+            sharedPreferences.edit().putStringSet("Array",autoTextSet).commit();
             Toast.makeText(EditDataActivity.this,R.string.editOK,Toast.LENGTH_SHORT).show();
             finish();
         }

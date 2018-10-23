@@ -60,16 +60,13 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/text_itemName"
-        android:layout_width="wrap_content"
+        android:layout_width="220dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
+        android:layout_marginStart="32dp"
+        android:completionThreshold="1"
         app:layout_constraintBottom_toBottomOf="@+id/textView"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toTopOf="@+id/textView" />
 
@@ -87,28 +84,22 @@
         android:id="@+id/text_cost"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
         android:ems="10"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="@+id/textView2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView2"
+        app:layout_constraintStart_toStartOf="@+id/text_itemName"
         app:layout_constraintTop_toTopOf="@+id/textView2" />
 
     <EditText
         android:id="@+id/text_detail"
         android:layout_width="wrap_content"
         android:layout_height="103dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginBottom="96dp"
         android:background="@drawable/border"
         android:ems="10"
         android:gravity="top|left"
         android:inputType="textMultiLine|textPersonName"
         app:layout_constraintBottom_toTopOf="@+id/btn_addConfirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/text_itemName"
         app:layout_constraintTop_toTopOf="@+id/textView6"
         app:layout_constraintVertical_bias="0.0" />
@@ -165,4 +156,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:title="@string/app_name" />
+
 </android.support.constraint.ConstraintLayout>
