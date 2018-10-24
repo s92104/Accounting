@@ -1,7 +1,9 @@
 package com.example.user.accounting;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -52,6 +54,7 @@ public class AddDataActivity extends AppCompatActivity {
         initView();
         setListener();
         getType();
+        loadTemp();
     }
 
     void initView()
@@ -113,6 +116,60 @@ public class AddDataActivity extends AppCompatActivity {
         arrayAdapter=new ArrayAdapter<String>(this,R.layout.support_simple_spinner_dropdown_item,typeString);
         spn_type.setAdapter(arrayAdapter);
     }
+    //是否載入暫存
+    void loadTemp()
+    {
+        documentReference.collection("Temp").document("Temp").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                DocumentSnapshot documentSnapshot=task.getResult();
+                if(documentSnapshot.exists())
+                {
+                    new AlertDialog.Builder(AddDataActivity.this)
+                            .setTitle(R.string.temporary)
+                            .setMessage(R.string.isLoadTemp)
+                            .setPositiveButton(R.string.confirm,loadTempDialog)
+                            .setNeutralButton(R.string.cancel,loadTempDialog)
+                            .setNegativeButton(R.string.giveup,loadTempDialog)
+                            .show();
+                }
+            }
+        });
+    }
+    //載入暫存對話方塊
+    DialogInterface.OnClickListener loadTempDialog=new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which)
+            {
+                case DialogInterface.BUTTON_POSITIVE:
+                    documentReference.collection("Temp").document("Temp").get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                            DocumentSnapshot documentSnapshot=task.getResult();
+                            text_itemName.setText(documentSnapshot.getString("Item"));
+                            //取得Type Index
+                            for(int i=0;i<typeString.size();i++)
+                                if(typeString.get(i).equals(documentSnapshot.getString("Type")))
+                                    spn_type.setSelection(i);
+                            text_cost.setText(documentSnapshot.getString("Cost"));
+                            text_detail.setText(documentSnapshot.getString("Detail"));
+                            //時間
+                            Date tmpDate=documentSnapshot.getDate("Date");
+                            btn_date.setText(String.format("%d/%02d/%02d",tmpDate.getYear()+1900,tmpDate.getMonth()+1,tmpDate.getDate()));
+                            btn_time.setText(String.format("%02d:%02d",tmpDate.getHours(),tmpDate.getMinutes()));
+                            pickDate=tmpDate;
+                            //刪除暫存
+                            documentReference.collection("Temp").document("Temp").delete();
+                        }
+                    });
+                    Toast.makeText(AddDataActivity.this,R.string.loadTempOK,Toast.LENGTH_SHORT).show();
+                    break;
+                 case DialogInterface.BUTTON_NEGATIVE:
+                     documentReference.collection("Temp").document("Temp").delete();
+            }
+        }
+    };
     //增加資料
    View.OnClickListener addData=new View.OnClickListener() {
        @Override
@@ -157,12 +214,11 @@ public class AddDataActivity extends AppCompatActivity {
     View.OnClickListener setTime=new View.OnClickListener() {
         @Override
         public void onClick(View v) {
-            Date date=new Date();
-            int year=date.getYear()+1900;
-            int month=date.getMonth()+1;
-            int day=date.getDate();
-            final int hour=date.getHours();
-            int minute=date.getMinutes();
+            int year=pickDate.getYear()+1900;
+            int month=pickDate.getMonth()+1;
+            int day=pickDate.getDate();
+            final int hour=pickDate.getHours();
+            int minute=pickDate.getMinutes();
             switch (v.getId())
             {
                 case R.id.btn_date:
@@ -210,6 +266,48 @@ public class AddDataActivity extends AppCompatActivity {
 
         }
     };
-
-
+    //是否暫存
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.temporary)
+                .setMessage(R.string.isSaveTemp)
+                .setPositiveButton(R.string.confirm,saveTempDialog)
+                .setNeutralButton(R.string.cancel,saveTempDialog)
+                .setNegativeButton(R.string.giveup,saveTempDialog)
+                .show();
+    }
+    //暫存對話方塊
+    DialogInterface.OnClickListener saveTempDialog=new DialogInterface.OnClickListener() {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            switch (which)
+            {
+                case DialogInterface.BUTTON_POSITIVE:
+                    String itemName=text_itemName.getText().toString();
+                    String costString=text_cost.getText().toString().equals("")?"0":text_cost.getText().toString();
+                    String type=text_type.getText().toString();
+                    String detail=text_detail.getText().toString();
+                    //資料
+                    HashMap hashMap=new HashMap();
+                    hashMap.put("Date",pickDate);
+                    hashMap.put("Year",pickDate.getYear()+1900);
+                    hashMap.put("Month",pickDate.getMonth()+1);
+                    hashMap.put("Day",pickDate.getDate());
+                    hashMap.put("Hour",pickDate.getHours());
+                    hashMap.put("Minute",pickDate.getMinutes());
+                    hashMap.put("Item",itemName);
+                    hashMap.put("Cost",costString);
+                    hashMap.put("Type",type);
+                    hashMap.put("Detail",detail);
+                    documentReference.collection("Temp").document("Temp").set(hashMap);
+                    Toast.makeText(AddDataActivity.this,R.string.saveTempOK,Toast.LENGTH_SHORT).show();
+                    finish();
+                    break;
+                case DialogInterface.BUTTON_NEGATIVE:
+                    finish();
+                    break;
+            }
+        }
+    };
 }

@@ -43,6 +43,12 @@
         <item>交通</item>
         <item>+</item>
     </string-array>
+    <string name="giveup">捨棄</string>
+    <string name="temporary">暫存</string>
+    <string name="isSaveTemp">是否暫存?</string>
+    <string name="isLoadTemp">載入暫存?</string>
+    <string name="saveTempOK">暫存成功</string>
+    <string name="loadTempOK">載入成功</string>
     <!--修改資料-->
     <string name="editOK">修改成功</string>
     <string name="delete">刪除</string>
