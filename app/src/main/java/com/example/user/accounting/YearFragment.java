@@ -220,7 +220,7 @@ public class YearFragment extends Fragment{
         for(int i=0;i<groupList.size();i++)
             if(expandableListView.isGroupExpanded(i) || isAllCollapse)
                 cost+=monthCost.get(i);
-        text_cost.setText((isAllCollapse?getString(R.string.monthCost):getString(R.string.totalCost)) + String.valueOf(cost) + getString(R.string.dollar));
+        text_cost.setText((isAllCollapse?getString(R.string.yearCost):getString(R.string.totalCost)) + String.valueOf(cost) + getString(R.string.dollar));
     }
     boolean isAllCollapse()
     {
